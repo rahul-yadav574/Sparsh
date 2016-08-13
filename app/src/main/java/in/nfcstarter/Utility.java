@@ -17,13 +17,8 @@ public class Utility {
     public static Boolean checkNFCStatus(Context context){
         NfcManager nfcManager = (NfcManager) context.getSystemService(Context.NFC_SERVICE);
         NfcAdapter nfcAdapter = nfcManager.getDefaultAdapter();
-
-        if (nfcAdapter == null){
-            return null;
-        }
-
+        if (nfcAdapter == null){return null;}
         return nfcAdapter.isEnabled();
-
     }
 
     public static void toastL(Context context,String string){

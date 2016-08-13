@@ -8,6 +8,8 @@ import android.nfc.tech.NfcA;
 import android.nfc.tech.NfcB;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -19,5 +21,12 @@ public class NfcTagUtils {
     private static final String TAG = "NfcTagUtils";
 
 
+    public static JSONObject readNfcTag(Tag tag){
+
+        JSONObject tagComponents = new JSONObject();
+        String [] techList = tag.getTechList();
+
+        return tagComponents;
+    }
 }
 

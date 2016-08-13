@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
+import android.telephony.SmsManager;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -33,10 +35,8 @@ public class LandingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
-
         nfcInfo = (TextView) findViewById(R.id.nfcInfoTextView);
         showNfcStatus();
-
     }
 
     @Override
@@ -88,7 +88,6 @@ public class LandingActivity extends Activity {
                     }
                 })
                 .create().show();
-
     }
 
     @Override
@@ -107,10 +106,10 @@ public class LandingActivity extends Activity {
     }
 
     void processNfcTag(Intent intent){
-
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        Log.d(TAG,"Tag id is : "+tag.getId().toString());
+        Log.d(TAG,""+tag.getTechList());
     }
+
 
 
 
