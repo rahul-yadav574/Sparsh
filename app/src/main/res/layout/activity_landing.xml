@@ -3,16 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:textColor="@android:color/holo_green_light"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/nfcInfoTextView"/>
+        android:layout_height="wrap_content">
 
+    <Button
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:text="PLAY GAME"
+        android:layout_margin="10dp"
+        android:id="@+id/playGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -101,7 +101,7 @@ public class About extends Fragment {
 
             dialog.setMessage("Retrieving Your Info...");
             dialog.setIndeterminate(true);
-            dialog.show();
+                dialog.show();
         }
 
         @Override

@@ -3,18 +3,16 @@ package in.nfcstarter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
-import android.telephony.SmsManager;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -29,6 +27,8 @@ public class LandingActivity extends Activity {
     private static final String TAG = "LandingActivity";
     private boolean IS_CARD_DETECTED = false;
     public static final String NFC_QUERY = "nfc_query";
+    private Button playGameButton;
+    private Button readABookButton;
 
     public LandingActivity() {
     }
@@ -37,7 +37,21 @@ public class LandingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
-        nfcInfo = (TextView) findViewById(R.id.nfcInfoTextView);
+       // nfcInfo = (TextView) findViewById(R.id.nfcInfoTextView);
+
+        playGameButton = (Button) findViewById(R.id.playGame);
+
+
+        playGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent startGame = new Intent(LandingActivity.this,GameActivity.class);
+                startActivity(startGame);
+            }
+        });
+
+
         showNfcStatus();
     }
 
@@ -55,11 +69,11 @@ public class LandingActivity extends Activity {
         Boolean nfcState = Utility.checkNFCStatus(LandingActivity.this);
 
         if (nfcState == null){
-            nfcInfo.setText("NFC NOT AVAILABLE");
+           // nfcInfo.setText("NFC NOT AVAILABLE");
         }
 
         else if (nfcState){
-            nfcInfo.setText("NFC AVAILABLE ... USE ANY ACTIVE OR PASSIVE DEVICE TO USE WITH IT...");
+            //nfcInfo.setText("NFC AVAILABLE ... USE ANY ACTIVE OR PASSIVE DEVICE TO USE WITH IT...");
         }
         else {
             showSwitchOnNfcDialog();
@@ -102,10 +116,11 @@ public class LandingActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction()) && !IS_CARD_DETECTED ){
+        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction())  ){
             processNfcTag(getIntent());
-            IS_CARD_DETECTED = true;
+            Constants.IS_APP_LAUNCHED = 1;
         }
+
     }
 
     void processNfcTag(Intent intent){
@@ -120,10 +135,19 @@ public class LandingActivity extends Activity {
 
         Log.d(TAG,data);
 
-        Intent startInfo = new Intent(LandingActivity.this,DescriptionActivity.class);
-        startInfo.putExtra(NFC_QUERY,data.substring(11));
-        startActivity(startInfo);
-       // nfcInfo.setText(data.substring(11));
+        if (data.substring(11).equals("books")){
+            Intent intent1 = new Intent(LandingActivity.this,BookActivity.class);
+            startActivity(intent1);
+
+        }
+
+        else {
+            Intent startInfo = new Intent(LandingActivity.this, DescriptionActivity.class);
+            startInfo.putExtra(NFC_QUERY, data.substring(11));
+            startActivity(startInfo);
+            // nfcInfo.setText(data.substring(11));
+
+        }
     }
 
 
