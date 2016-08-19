@@ -72,9 +72,6 @@ public class About extends Fragment {
 
     private void startGettingInfoFromServer(){
 
-
-
-
       //  how(dialog.s);
 
         String apiUrl = Constants.SUMMARY_API_URL+ DescriptionActivity.actualQuery;
@@ -113,8 +110,6 @@ public class About extends Fragment {
                 JSONObject jsonObject = jsonObject1.getJSONArray("documents").getJSONObject(0);
                 final String summary = jsonObject.getString("summary");
                 final String ref = jsonObject.getString("reference");
-
-
 
                 JSONArray jsonArray = jsonObject.getJSONArray("wikipedia_category");
                 String res = "";
