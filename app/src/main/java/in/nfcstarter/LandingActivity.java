@@ -27,6 +27,8 @@ public class LandingActivity extends Activity {
     private NfcManager nfcManager;
     private NfcAdapter nfcAdapter;
     private static final String TAG = "LandingActivity";
+    private boolean IS_CARD_DETECTED = false;
+    public static final String NFC_QUERY = "nfc_query";
 
     public LandingActivity() {
     }
@@ -100,14 +102,28 @@ public class LandingActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction())){
+        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction()) && !IS_CARD_DETECTED ){
             processNfcTag(getIntent());
+            IS_CARD_DETECTED = true;
         }
     }
 
     void processNfcTag(Intent intent){
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        Log.d(TAG,""+tag.getTechList());
+
+
+        for (String techUsed : tag.getTechList()){
+            Log.d(TAG,""+techUsed);
+        }
+
+        String data = NfcTagUtils.readTag(tag);
+
+        Log.d(TAG,data);
+
+        Intent startInfo = new Intent(LandingActivity.this,DescriptionActivity.class);
+        startInfo.putExtra(NFC_QUERY,data.substring(11));
+        startActivity(startInfo);
+       // nfcInfo.setText(data.substring(11));
     }
 
 
