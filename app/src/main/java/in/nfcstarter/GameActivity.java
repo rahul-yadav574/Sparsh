@@ -1,9 +1,14 @@
 package in.nfcstarter;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -17,12 +22,15 @@ public class GameActivity extends AppCompatActivity {
     private Thread gameThread;
     private Runnable gameRunnable;
     private int USER_SCORE  = 0;
+    private int TRY = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        getSupportActionBar().setTitle("Play Game");
 
         gameImage = (ImageView) findViewById(R.id.gameImage);
         gameHint1 = (TextView) findViewById(R.id.gameHint1);
@@ -31,44 +39,67 @@ public class GameActivity extends AppCompatActivity {
         gameLevel = (TextView) findViewById(R.id.gameLevel);
         gameScore = (TextView) findViewById(R.id.gameScore);
 
-        gameRunnable = new Runnable() {
-            @Override
-            public void run() {
-                changeLevel();
-            }
-        };
+        changeToLevelOne();
 
-        gameThread = new Thread(gameRunnable);
+
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (TRY ==0){
+                            TRY =1 ;
+                            USER_SCORE = 10;
+                            changeToLevelTwo();
+                        }
+                        else if (TRY == 1){
+
+                            new AlertDialog.Builder(GameActivity.this)
+                                    .setCancelable(false)
+                                    .setTitle("Game Over...")
+                                    .setMessage("You Scored 10 points..")
+                                    .setPositiveButton("TRY AGAIN", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            USER_SCORE =0;
+                                            dialog.cancel();
+                                            changeToLevelOne();
+                                        }
+                                    })
+                            .show();
+
+                            timer.cancel();
+                        }
+                    }
+                });
+
+            }
+        }, 5000, 5000);
 
     }
 
     void changeToLevelOne(){
-        gameImage.setImageDrawable(getResources().getDrawable());
-        gameScore.setText(USER_SCORE);
+        gameImage.setImageDrawable(getResources().getDrawable(R.drawable.level_1));
+        gameScore.setText(String.valueOf(USER_SCORE));
         gameLevel.setText("Level : 1");
         gameHint1.setText("This is hint one..");
-        gameHint1.setText("This is hint two");
+        gameHint2.setText("This is hint two");
         gameHint3.setText("This is hint three");
     }
 
 
     void changeToLevelTwo(){
 
-        gameImage.setImageDrawable(getResources().getDrawable());
-        gameScore.setText(USER_SCORE);
+        gameImage.setImageDrawable(getResources().getDrawable(R.drawable.level_2));
+        gameScore.setText(String.valueOf(USER_SCORE));
         gameLevel.setText("Level : 2");
         gameHint1.setText("This is hint one..");
-        gameHint1.setText("This is hint two");
+        gameHint2.setText("This is hint two");
         gameHint3.setText("This is hint three");
     }
 
-    void changeToLevelThree(){
-
-        gameImage.setImageDrawable(getResources().getDrawable());
-        gameScore.setText(USER_SCORE);
-        gameLevel.setText("Level : 3");
-        gameHint1.setText("This is hint one..");
-        gameHint1.setText("This is hint two");
-        gameHint3.setText("This is hint three");
-    }
 }
