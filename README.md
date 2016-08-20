@@ -1,7 +1,7 @@
 # Touch
 
 
-- App Made during the HACK IITD Hackathon..
+- App Made during the HACK IIITD Hackathon..
 - 
 #Features :
 
